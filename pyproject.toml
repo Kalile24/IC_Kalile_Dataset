@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hrc-data-collection"
+version = "0.1.0"
+description = "Coleta e preparacao de dados monoculares para predicao de intencao em HRC."
+readme = "README.md"
+requires-python = ">=3.9,<3.10"
+dependencies = [
+    "mediapipe==0.10.21",
+    "numpy",
+    "opencv-python",
+    "pandas",
+]
+
+[project.optional-dependencies]
+dev = [
+    "jsonschema",
+    "pytest",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

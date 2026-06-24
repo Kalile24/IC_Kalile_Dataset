@@ -1,0 +1,30 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+.venv/
+dist/
+build/
+
+# IDE / tooling
+.vscode/
+.obsidian/
+.agents/
+.codex/
+
+# PDFs
+*.pdf
+
+# Raw session data (videos, skeletons, frame logs)
+sessions/*
+!sessions/.gitkeep
+
+pilot_sessions/*
+!pilot_sessions/.gitkeep
+
+# Processed datasets — keep only structure placeholder
+datasets/*
+!datasets/v1/
+datasets/v1/*
+!datasets/v1/.gitkeep

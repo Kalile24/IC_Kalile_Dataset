@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liarc.ime.eb.br/hrc-data-collection/meta.schema.json",
+  "title": "HRC collection session metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "session_id",
+    "participant",
+    "script_id",
+    "date_iso",
+    "camera",
+    "geometry",
+    "pipeline",
+    "files"
+  ],
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "pattern": "^S[0-9]+_[0-9]{8}$"
+    },
+    "participant": {
+      "type": "string",
+      "pattern": "^P[0-9]+$"
+    },
+    "script_id": {
+      "type": "string",
+      "pattern": "^R[0-9]+$"
+    },
+    "date_iso": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "camera": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model",
+        "resolution",
+        "fps_nominal",
+        "fps_effective",
+        "autofocus"
+      ],
+      "properties": {
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolution": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "integer",
+              "minimum": 1
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "Resolucao [largura, altura] em pixels."
+        },
+        "fps_nominal": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "fps_effective": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0,
+          "description": "Nulo durante a captura e calculado ao encerrar a sessao."
+        },
+        "autofocus": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "geometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "camera_distance_m",
+        "camera_height",
+        "zone_layout_version"
+      ],
+      "properties": {
+        "camera_distance_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "camera_height": {
+          "type": "string",
+          "minLength": 1
+        },
+        "zone_layout_version": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "pipeline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mediapipe_version",
+        "joints15_mapping_version",
+        "quaternion_world"
+      ],
+      "properties": {
+        "mediapipe_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "joints15_mapping_version": {
+          "const": "v1"
+        },
+        "quaternion_world": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "Quaternion [w, x, y, z]."
+        }
+      }
+    },
+    "files": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "frames",
+        "skeleton",
+        "video"
+      ],
+      "properties": {
+        "frames": {
+          "const": "frames.jsonl"
+        },
+        "skeleton": {
+          "const": "skeleton.pkl"
+        },
+        "video": {
+          "const": "video.mp4"
+        }
+      }
+    }
+  }
+}

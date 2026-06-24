@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liarc.ime.eb.br/hrc-data-collection/plan_events.schema.json",
+  "title": "Per-session external PlanGraph events",
+  "description": "Eventos externos ao classificador, ordenados por frame_idx.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "events"
+  ],
+  "properties": {
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "frame_idx",
+          "event"
+        ],
+        "properties": {
+          "frame_idx": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "event": {
+            "const": "begin_four_tubes"
+          }
+        }
+      }
+    }
+  }
+}

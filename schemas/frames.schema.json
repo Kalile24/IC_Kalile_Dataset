@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liarc.ime.eb.br/hrc-data-collection/frames.schema.json",
+  "title": "One frames.jsonl record",
+  "description": "Valida uma linha individual de frames.jsonl.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "frame_idx",
+    "t_mono",
+    "landmarks_raw",
+    "joints15"
+  ],
+  "properties": {
+    "frame_idx": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Chave primaria zero-based comum aos artefatos da sessao."
+    },
+    "t_mono": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Segundos desde o inicio da sessao em relogio monotonico."
+    },
+    "landmarks_raw": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/landmarkRaw"
+      },
+      "minItems": 33,
+      "maxItems": 33
+    },
+    "joints15": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/jointXYZ"
+      },
+      "minItems": 15,
+      "maxItems": 15
+    }
+  },
+  "$defs": {
+    "landmarkRaw": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4,
+      "description": "[x, y, z, visibility] do MediaPipe."
+    },
+    "jointXYZ": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3,
+      "description": "[x, y, z] na ordem joints15 v1."
+    }
+  }
+}

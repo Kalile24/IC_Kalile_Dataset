@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liarc.ime.eb.br/hrc-data-collection/annotations.schema.json",
+  "title": "Per-session intention annotations",
+  "description": "Intervalos zero-based, inclusivos. As listas start e end de cada rotulo devem ter o mesmo comprimento; essa invariante e validada pela aplicacao.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "no_action",
+    "get_connectors",
+    "get_screws",
+    "get_wheels",
+    "ignore"
+  ],
+  "properties": {
+    "no_action": {
+      "$ref": "#/$defs/intervals"
+    },
+    "get_connectors": {
+      "$ref": "#/$defs/intervals"
+    },
+    "get_screws": {
+      "$ref": "#/$defs/intervals"
+    },
+    "get_wheels": {
+      "$ref": "#/$defs/intervals"
+    },
+    "ignore": {
+      "$ref": "#/$defs/intervals",
+      "description": "Trechos excluidos do dataset; ignore nao possui ID de classe."
+    }
+  },
+  "$defs": {
+    "frameIndices": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "intervals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/frameIndices"
+        },
+        "end": {
+          "$ref": "#/$defs/frameIndices"
+        }
+      }
+    }
+  }
+}
