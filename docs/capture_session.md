@@ -8,10 +8,10 @@ MediaPipe Pose, mantendo a mesma chave `frame_idx` em:
 - `skeleton.pkl`;
 - `video.mp4`.
 
-O logger nao usa ROS, OAK-D ou PyTorch e nao aplica EMA, suavizacao do
-MediaPipe, regras OOD ou filtros de inferencia.
+O logger não usa ROS, OAK-D ou PyTorch e não aplica EMA, suavização do
+MediaPipe, regras OOD ou filtros de inferência.
 
-## Preparacao
+## Preparação
 
 O projeto requer Python 3.9 e MediaPipe Solutions Pose:
 
@@ -31,9 +31,9 @@ python -m datacol.capture_session --help
 
 A primeira linha deve terminar em `True`.
 
-## Descobrir cameras
+## Descobrir câmeras
 
-Liste somente indices que abrem e entregam um quadro:
+Liste somente índices que abrem e entregam um quadro:
 
 ```bash
 python -m datacol.capture_session --list-cameras
@@ -45,33 +45,33 @@ Exemplo:
 index=2 resolution=1280x720
 ```
 
-Por padrao, sao testados os indices de 0 a 9. Para ampliar:
+Por padrão, são testados os índices de 0 a 9. Para ampliar:
 
 ```bash
 python -m datacol.capture_session --list-cameras --camera-scan-limit 20
 ```
 
 Durante a captura, `--camera-index` e opcional. Quando omitido, a primeira
-camera legivel e selecionada automaticamente.
+câmera legível e selecionada automaticamente.
 
-## Identificador da sessao
+## Identificador da sessão
 
-Consulte o proximo ID sem iniciar uma captura:
+Consulte o próximo ID sem iniciar uma captura:
 
 ```bash
 python -m datacol.capture_session --suggest-session-id
 ```
 
-O formato e `SNN_YYYYMMDD`. O numero e sempre superior ao maior numero de
-sessao existente, inclusive se a sessao anterior tiver outra data. Isso evita
-reutilizacao acidental de IDs.
+O formato e `SNN_YYYYMMDD`. O número e sempre superior ao maior número de
+sessão existente, inclusive se a sessão anterior tiver outra data. Isso evita
+reutilização acidental de IDs.
 
 O argumento posicional `session_id` e opcional. Quando omitido, o logger exibe
-e usa automaticamente a sugestao.
+e usa automaticamente a sugestão.
 
 ## Iniciar uma captura
 
-Forma recomendada, com ID e camera automaticos:
+Forma recomendada, com ID e câmera automáticos:
 
 ```bash
 python -m datacol.capture_session \
@@ -84,7 +84,7 @@ python -m datacol.capture_session \
   --fps 30
 ```
 
-Para controlar explicitamente ID e camera:
+Para controlar explicitamente ID e câmera:
 
 ```bash
 python -m datacol.capture_session S07_20260613 \
@@ -98,31 +98,31 @@ python -m datacol.capture_session S07_20260613 \
   --fps 30
 ```
 
-Opcoes comuns:
+Opções comuns:
 
-- `--max-frames 150`: encerra automaticamente apos 150 quadros;
+- `--max-frames 150`: encerra automaticamente após 150 quadros;
 - `--no-preview`: captura sem abrir janela;
-- `--autofocus locked_v4l2`: registra a configuracao de foco;
-- `--camera-height chest`: registra a altura da camera;
-- `--zone-layout-version v1`: registra a versao do layout;
-- `--output-root sessions`: altera o diretorio de sessoes;
+- `--autofocus locked_v4l2`: registra a configuração de foco;
+- `--camera-height chest`: registra a altura da câmera;
+- `--zone-layout-version v1`: registra a versão do layout;
+- `--output-root sessions`: altera o diretório de sessões;
 - `--quaternion-world W X Y Z`: altera o quaternion registrado.
 
 ## Janela de captura
 
 O HUD mostra:
 
-- `REC` e o numero de quadros gravados;
+- `REC` e o número de quadros gravados;
 - tempo monotonicamente decorrido;
 - FPS observado durante a captura;
 - `POSE OK` em verde ou `POSE MISSING` em vermelho;
 - lembrete das teclas de encerramento.
 
-Pressione `q` ou `Esc` para finalizar. `Ctrl+C` tambem encerra preservando os
-quadros ja capturados. O HUD existe apenas na visualizacao: `video.mp4` recebe
+Pressione `q` ou `Esc` para finalizar. `Ctrl+C` também encerra preservando os
+quadros já capturados. O HUD existe apenas na visualização: `video.mp4` recebe
 o quadro original, sem texto sobreposto.
 
-Se o MediaPipe nao detectar pose, o quadro ainda e gravado para preservar o
+Se o MediaPipe não detectar pose, o quadro ainda e gravado para preservar o
 sincronismo. Nesse caso:
 
 - `landmarks_raw` recebe 33 entradas `[0, 0, 0, 0]`;
@@ -130,9 +130,9 @@ sincronismo. Nesse caso:
 
 Nenhuma pose anterior e repetida ou imputada.
 
-## Saida
+## Saída
 
-Uma sessao finalizada possui:
+Uma sessão finalizada possui:
 
 ```text
 sessions/S07_20260613/
@@ -142,8 +142,8 @@ sessions/S07_20260613/
 └── video.mp4
 ```
 
-`meta.json` registra participante, roteiro, data com fuso, camera, resolucao
-real, FPS nominal e efetivo, geometria, versoes e quaternion.
+`meta.json` registra participante, roteiro, data com fuso, câmera, resolução
+real, FPS nominal e efetivo, geometria, versões e quaternion.
 
 Cada linha de `frames.jsonl` contem:
 
@@ -161,9 +161,9 @@ Os arrays reais possuem respectivamente 33 e 15 itens.
 `skeleton.pkl` contem um `numpy.ndarray` `float32` com shape `(N, 15, 3)`.
 `video.mp4` contem os mesmos `N` quadros e na mesma ordem.
 
-## Validar uma sessao
+## Validar uma sessão
 
-A captura executa validacao automaticamente ao finalizar. Para repetir:
+A captura executa validação automaticamente ao finalizar. Para repetir:
 
 ```bash
 python -m datacol.capture_session \
@@ -172,7 +172,7 @@ python -m datacol.capture_session \
 
 O comando verifica:
 
-- presenca dos quatro arquivos;
+- presença dos quatro arquivos;
 - estrutura e campos de `meta.json`;
 - shapes `(33, 4)` e `(15, 3)` em cada linha JSONL;
 - `frame_idx` zero-based e contiguo;
@@ -182,17 +182,17 @@ O comando verifica:
 - igualdade de `N` entre JSONL, PKL e video;
 - preenchimento de `fps_effective`.
 
-O codigo de saida e `0` para sessao valida e `1` para sessao invalida.
+O código de saída é `0` para sessão válida e `1` para sessão inválida.
 
-## Protecao dos dados
+## Proteção dos dados
 
-Um diretorio existente nunca e sobrescrito. Use outro ID para uma nova
+Um diretório existente nunca e sobrescrito. Use outro ID para uma nova
 captura.
 
-Se a inicializacao falhar antes de gravar o primeiro quadro, o logger remove
-somente o diretorio vazio criado por aquela tentativa. Se ao menos um quadro
-tiver sido gravado, os arquivos parciais sao preservados para auditoria e
-recuperacao manual.
+Se a inicialização falhar antes de gravar o primeiro quadro, o logger remove
+somente o diretório vazio criado por aquela tentativa. Se ao menos um quadro
+tiver sido gravado, os arquivos parciais são preservados para auditoria e
+recuperação manual.
 
 ## Testes
 
@@ -203,7 +203,7 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_integrity.py
 ```
 
 O bloqueio de plugins evita que plugins pytest do ROS global contaminem este
-repositorio independente.
+repositório independente.
 
 ## Limitações conhecidas
 
@@ -214,8 +214,5 @@ tempo real.
 
 As juntas armazenadas são coordenadas normalizadas do MediaPipe. O quaternion
 é registrado em `meta.json`, mas o logger não aplica rotação nem normalização
-de treinamento. Essas decisões pertencem ao pré-processamento offline.
-
-Consulte
-[`session_status_2026-06-13.md`](session_status_2026-06-13.md) antes da
-próxima coleta experimental.
+de treinamento. Essas decisões pertencem ao pré-processamento offline,
+aplicado em `hrc-finetune` no momento do fine-tuning.

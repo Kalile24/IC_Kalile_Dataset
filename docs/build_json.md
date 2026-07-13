@@ -179,13 +179,11 @@ O relatório conta somente janelas realmente emitidas, depois da exclusão de
 
 O JSON preserva a hierarquia e os cut points esperados pelo `Dataset.py`.
 Entretanto, o novo `skeleton.pkl` é um array `(N, 15, 3)`, enquanto o caminho
-PKL do loader legado espera objetos com atributo `.landmarks`. A futura OS-5
-deve consumir as janelas materializadas ou usar um adaptador explícito.
-
-O pré-processamento numérico legado também ainda não é aplicado às poses
-gravadas no JSON. Não use o dataset piloto para treinamento experimental antes
-de resolver os itens registrados em
-[`session_status_2026-06-13.md`](session_status_2026-06-13.md).
+PKL do loader legado espera objetos com atributo `.landmarks`. O repositório
+`hrc-finetune` (OS-5/OS-6) consome as janelas materializadas diretamente, sem
+depender do loader legado — ver
+[`mapeamento_os1-4_vs_original.md`](mapeamento_os1-4_vs_original.md) para o
+detalhamento dessa incompatibilidade e como ela foi resolvida.
 
 ## Testes
 

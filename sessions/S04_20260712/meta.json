@@ -1,0 +1,36 @@
+{
+  "session_id": "S04_20260712",
+  "participant": "P01",
+  "script_id": "R03",
+  "date_iso": "2026-07-12T20:27:48-03:00",
+  "camera": {
+    "model": "Intelbras WCI 1080p",
+    "resolution": [
+      1280,
+      720
+    ],
+    "fps_nominal": 30.0,
+    "fps_effective": 9.53462457525132,
+    "autofocus": "locked_v4l2"
+  },
+  "geometry": {
+    "camera_distance_m": 2.2,
+    "camera_height": "chest",
+    "zone_layout_version": "v1"
+  },
+  "pipeline": {
+    "mediapipe_version": "0.10.21",
+    "joints15_mapping_version": "v1",
+    "quaternion_world": [
+      0.14070565,
+      -0.15007018,
+      -0.7552408,
+      0.62232804
+    ]
+  },
+  "files": {
+    "frames": "frames.jsonl",
+    "skeleton": "skeleton.pkl",
+    "video": "video.mp4"
+  }
+}

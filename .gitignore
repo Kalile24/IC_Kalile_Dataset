@@ -16,15 +16,9 @@ build/
 # PDFs
 *.pdf
 
-# Raw session data (videos, skeletons, frame logs)
-sessions/*
-!sessions/.gitkeep
+# Sessoes: versiona anotacoes/esqueleto/metadados, mas nao os videos brutos
+sessions/*/*.mp4
 
-pilot_sessions/*
-!pilot_sessions/.gitkeep
-
-# Processed datasets — keep only structure placeholder
+# Datasets consolidados (v1) sao versionados; outras versoes ficam de fora
 datasets/*
 !datasets/v1/
-datasets/v1/*
-!datasets/v1/.gitkeep

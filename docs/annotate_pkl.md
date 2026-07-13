@@ -1,12 +1,12 @@
 # Guia do `annotate_pkl.py`
 
-O `annotate_pkl.py` implementa a OS-2: reproduz uma sessao quadro a quadro,
+O `annotate_pkl.py` implementa a OS-2: reproduz uma sessão quadro a quadro,
 desenha `skeleton.pkl` sobre `video.mp4`, permite marcar intervalos por teclado
 e grava `annotations.json`.
 
-## Pre-requisitos
+## Pré-requisitos
 
-A sessao deve ter sido concluida pela OS-1 e conter:
+A sessão deve ter sido concluída pela OS-1 e conter:
 
 ```text
 sessions/S01_20260620/
@@ -16,7 +16,7 @@ sessions/S01_20260620/
 └── video.mp4
 ```
 
-Antes de anotar, e recomendavel validar a sessao:
+Antes de anotar, e recomendável validar a sessão:
 
 ```bash
 python -m datacol.capture_session \
@@ -33,13 +33,13 @@ python -m datacol.annotate_pkl sessions/S01_20260620
 
 O anotador verifica que vídeo e esqueleto possuem a mesma quantidade de
 quadros. O vídeo e lido sob demanda, mantendo apenas um quadro em cache para
-nao carregar a sessao inteira na memoria.
+não carregar a sessão inteira na memória.
 
-Se `annotations.json` ja existir e for valido, ele e recarregado para
-continuar ou revisar a anotacao. Caso contrario, todos os quadros comecam como
+Se `annotations.json` já existir e for válido, ele e recarregado para
+continuar ou revisar a anotação. Caso contrário, todos os quadros começam como
 `no_action`.
 
-## Interface grafica
+## Interface gráfica
 
 A janela e dividida em duas partes:
 
@@ -66,7 +66,7 @@ Os atalhos de teclado continuam disponíveis para anotação rápida.
 
 ## Classes
 
-| Tecla | Rotulo | ID do modelo |
+| Tecla | Rótulo | ID do modelo |
 |---|---|---:|
 | `0` | `no_action` | 0 |
 | `1` | `get_connectors` | 1 |
@@ -74,34 +74,34 @@ Os atalhos de teclado continuam disponíveis para anotação rápida.
 | `3` | `get_wheels` | 3 |
 | `i` | `ignore` | nenhum |
 
-`ignore` e salvo explicitamente, mas sera excluido do dataset pela OS-4.
+`ignore` e salvo explicitamente, mas será excluído do dataset pela OS-4.
 O evento `begin_four_tubes` não é uma classe: ele é salvo separadamente em
 `plan_events.json`.
 
 ## Controles
 
-| Tecla | Acao |
+| Tecla | Ação |
 |---|---|
 | `Espaco` | reproduzir ou pausar |
 | `a` ou seta esquerda | voltar 1 quadro |
-| `d` ou seta direita | avancar 1 quadro |
+| `d` ou seta direita | avançar 1 quadro |
 | `j` | voltar 10 quadros |
-| `l` | avancar 10 quadros |
-| `b` | marcar inicio do intervalo no quadro atual |
+| `l` | avançar 10 quadros |
+| `b` | marcar início do intervalo no quadro atual |
 | `f` | marcar ou remover `begin_four_tubes` no quadro atual |
-| `0`, `1`, `2`, `3`, `i` | aplicar classe do inicio marcado ate o quadro atual |
-| `u` | desfazer a ultima aplicacao feita nesta execucao |
+| `0`, `1`, `2`, `3`, `i` | aplicar classe do início marcado até o quadro atual |
+| `u` | desfazer a última aplicação feita nesta execução |
 | `s` | validar, salvar e encerrar |
-| `q` ou `Esc` | cancelar sem salvar alteracoes |
+| `q` ou `Esc` | cancelar sem salvar alterações |
 
-Os limites sao zero-based e inclusivos em `annotations.json`.
+Os limites são zero-based e inclusivos em `annotations.json`.
 
 ## Fluxo recomendado
 
 1. Use `Espaco` para localizar aproximadamente o gesto.
 2. Pause e navegue com `a`, `d`, `j` e `l`.
 3. No primeiro quadro do gesto, pressione `b`.
-4. Navegue ate o ultimo quadro do gesto.
+4. Navegue até o último quadro do gesto.
 5. Pressione a tecla da classe.
 6. Repita para os demais gestos e para trechos `ignore`.
 7. No primeiro quadro do bloco `ignore` dos quatro tubos curtos, pressione
@@ -109,10 +109,10 @@ Os limites sao zero-based e inclusivos em `annotations.json`.
 8. Pressione `s` para salvar.
 
 Para classificar apenas o quadro atual, pressione a tecla da classe sem usar
-`b`. Tambem e permitido marcar o fim primeiro e navegar para tras: o anotador
-ordena os dois limites antes de aplicar o rotulo.
+`b`. Também e permitido marcar o fim primeiro e navegar para trás: o anotador
+ordena os dois limites antes de aplicar o rótulo.
 
-Como `no_action` cobre tudo inicialmente, nao e necessario marcar manualmente
+Como `no_action` cobre tudo inicialmente, não e necessário marcar manualmente
 os intervalos de repouso. Ao aplicar outra classe, ela substitui `no_action`
 naquele intervalo.
 
@@ -147,7 +147,7 @@ A visualização é deliberadamente compacta: somente ombros, cotovelos, pulsos
 e quadris são desenhados. Juntas de mãos e nariz continuam armazenadas nos
 dados, mas não poluem o replay.
 
-Quadros sem pose usam o sentinela zero da OS-1 e nao desenham um esqueleto
+Quadros sem pose usam o sentinela zero da OS-1 e não desenham um esqueleto
 falso no canto da imagem.
 
 ## Arquivo gerado
@@ -194,11 +194,11 @@ Quando `four_tubes` participa da sessão, o anotador também grava:
 
 Antes de salvar, o programa exige:
 
-- exatamente as cinco chaves de rotulo;
+- exatamente as cinco chaves de rótulo;
 - listas `start` e `end` com o mesmo tamanho;
-- intervalos ordenados e dentro da sessao;
-- nenhuma sobreposicao;
-- cobertura de todo quadro por exatamente um rotulo;
+- intervalos ordenados e dentro da sessão;
+- nenhuma sobreposição;
+- cobertura de todo quadro por exatamente um rótulo;
 - `begin_four_tubes` único e no primeiro quadro de um intervalo `ignore`.
 
 ## Testes
@@ -210,10 +210,8 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
   python -m pytest -q tests/test_annotate.py
 ```
 
-Eles verificam cobertura total, rejeicao de lacunas e sobreposicoes,
-persistencia de `ignore`, round-trip JSON, navegacao reversa e overlay.
+Eles verificam cobertura total, rejeição de lacunas e sobreposições,
+persistência de `ignore`, round-trip JSON, navegação reversa e overlay.
 
 Para auditar o contexto derivado após a anotação, use
-[`context_replay.md`](context_replay.md). As pendências antes da coleta
-definitiva estão consolidadas em
-[`session_status_2026-06-13.md`](session_status_2026-06-13.md).
+[`context_replay.md`](context_replay.md).

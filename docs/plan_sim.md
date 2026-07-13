@@ -1,8 +1,8 @@
 # Guia do `plan_sim.py`
 
-O `plan_sim.py` implementa a OS-3: simula offline as transicoes do `PlanGraph`
+O `plan_sim.py` implementa a OS-3: simula offline as transições do `PlanGraph`
 de `controller/receiver.py`, sem importar ROS, executar waypoints ou controlar
-o robo.
+o robô.
 
 Depois de `bottom`, o grafo admite dois caminhos principais:
 
@@ -43,17 +43,17 @@ acumula oito parafusos em `top` no outro.
 - contagem de tubos curtos e longos;
 - contagem de parafusos em `bottom`, `four_tubes` e `top`;
 - contagem de rodas;
-- estagio ativo e historico de estagios concluidos;
-- acoes concluidas por estagio;
-- historicos de acoes e intencoes aceitas.
+- estágio ativo e histórico de estágios concluídos;
+- ações concluídas por estágio;
+- históricos de ações e intenções aceitas.
 
-Um estagio de conectores termina depois de quatro acoes de tubo. Nesse momento,
-ele entra em `stage_history` e o estagio ativo volta a `None`.
+Um estágio de conectores termina depois de quatro ações de tubo. Nesse momento,
+ele entra em `stage_history` e o estágio ativo volta a `None`.
 
-## Decisao e conclusao
+## Decisão e conclusão
 
-O controlador real decide uma acao antes de saber se sua execucao terminou.
-O simulador preserva essa separacao:
+O controlador real decide uma ação antes de saber se sua execução terminou.
+O simulador preserva essa separação:
 
 ```python
 plan = PlanGraph()
@@ -65,17 +65,17 @@ if action is not None:
 ```
 
 `apply_intention()` reproduz `decide_send_action`. `apply_action()` reproduz
-somente a atualizacao feita depois de uma execucao bem-sucedida. Portanto,
-deixe de chamar `apply_action()` para simular uma acao decidida que falhou.
+somente a atualização feita depois de uma execução bem-sucedida. Portanto,
+deixe de chamar `apply_action()` para simular uma ação decidida que falhou.
 
-Para o replay de anotacoes, onde a acao observada e tratada como concluida,
+Para o replay de anotações, onde a ação observada e tratada como concluída,
 use o atalho:
 
 ```python
 action = plan.step("get_connectors")
 ```
 
-`no_action` nao altera o estado e retorna `None`.
+`no_action` não altera o estado e retorna `None`.
 
 ## Momento de amostragem
 
@@ -130,11 +130,11 @@ Os quatro primeiros valores formam um one-hot do atributo `stage`.
 ]
 ```
 
-Os valores normalizados sao limitados ao intervalo `[0, 1]`. Isso preserva o
-contrato do modelo mesmo se uma sequencia fora do protocolo fizer o contador
-legado ultrapassar o maximo experimental.
+Os valores normalizados são limitados ao intervalo `[0, 1]`. Isso preserva o
+contrato do modelo mesmo se uma sequência fora do protocolo fizer o contador
+legado ultrapassar o máximo experimental.
 
-## Preset do estagio I
+## Preset do estágio I
 
 O construtor aceita o mesmo preset do receptor:
 
@@ -146,17 +146,17 @@ O estado inicial resultante possui:
 
 - dois tubos curtos e dois longos;
 - quatro parafusos em `bottom`;
-- registro `bottom` com a sequencia curto, longo, curto, longo;
+- registro `bottom` com a sequência curto, longo, curto, longo;
 - `stage_history == ["bottom"]`;
-- nenhum estagio ativo.
+- nenhum estágio ativo.
 
-Os testes tambem constroem esse estado pela sequencia canonica de quatro
-`get_connectors` e quatro `get_screws`, verificando equivalencia de contadores,
-registros e historico de estagios.
+Os testes também constroem esse estado pela sequência canônica de quatro
+`get_connectors` e quatro `get_screws`, verificando equivalência de contadores,
+registros e histórico de estágios.
 
-## Estagio `four_tubes`
+## Estágio `four_tubes`
 
-No receptor original, a ativacao de `four_tubes` acontece fora de
+No receptor original, a ativação de `four_tubes` acontece fora de
 `decide_send_action`, no tratamento do comando de voz `short`. Ela pode
 ocorrer depois de `bottom`, antes ou depois da conclusão de `top`:
 
@@ -169,13 +169,13 @@ for _ in range(4):
         plan.apply_action(action[0])
 ```
 
-Tambem sao aceitos os comandos manuais do decisor legado: `short`, `long`,
-`spin` e `get up`. Eles nao entram no historico de intencoes do modelo.
+Também são aceitos os comandos manuais do decisor legado: `short`, `long`,
+`spin` e `get up`. Eles não entram no histórico de intenções do modelo.
 
 ## Snapshot
 
-`snapshot()` retorna uma copia independente e serializavel de todo o estado.
-Ele e util para depuracao, testes de determinismo e relatorios da OS-4:
+`snapshot()` retorna uma cópia independente e serializável de todo o estado.
+Ele e útil para depuração, testes de determinismo e relatórios da OS-4:
 
 ```python
 state = plan.snapshot()
@@ -190,9 +190,8 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
   python -m pytest -q tests/test_plan_sim.py
 ```
 
-Eles cobrem vetores 7D/10D, alternancia de conectores, separacao entre decisao
-e conclusao, `four_tubes`, determinismo e equivalencia com `--stageI_done`.
+Eles cobrem vetores 7D/10D, alternância de conectores, separação entre decisão
+e conclusão, `four_tubes`, determinismo e equivalência com `--stageI_done`.
 
-O simulador está validado para a OS-3. As decisões pendentes de amostragem,
-pré-processamento e integração com o futuro loader estão registradas em
-[`session_status_2026-06-13.md`](session_status_2026-06-13.md).
+O simulador está validado para a OS-3 e é consumido diretamente por
+`build_json.py` (política `proxy_graph`) na consolidação do dataset real.

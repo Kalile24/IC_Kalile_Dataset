@@ -96,6 +96,4 @@ exemplo, a quarta roda continua mostrando `0.75`; o valor passa a `1.0` no
 primeiro quadro posterior ao fim desse intervalo.
 
 Esta ferramenta audita o estado lógico e não corrige diferenças de tempo entre
-FPS nominal e efetivo. Para as decisões pendentes antes da coleta definitiva,
-consulte
-[`session_status_2026-06-13.md`](session_status_2026-06-13.md).
+FPS nominal e efetivo.
